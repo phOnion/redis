@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: ["*", "*/*"]
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php-versions }} (Redis ${{ matrix.redis-versions }})
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:${{ matrix.redis-versions }}
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+        php-versions: ["8.1", "8.2"]
+        redis-versions: ["6", "7"]
+        ts: ["ts", "nts"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        with:
+          php-version: ${{ matrix.php-versions }}
+          ini-values: zend.assertions = 1, assert.active = On, assert.exception=1, assert.bail=1
+          coverage: xdebug
+        env:
+          phpts: ${{matrix.ts}}
+          update: true
+        uses: shivammathur/setup-php@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Run test suite
+        run: composer test
