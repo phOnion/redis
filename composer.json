@@ -1,6 +1,7 @@
 {
   "name": "onion/redis",
   "description": "Async redis client based on onion/event-loop",
+  "license": "MIT",
   "authors": [
     {
       "name": "Dimitar Dimitrov",

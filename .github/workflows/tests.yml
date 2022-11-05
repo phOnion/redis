@@ -41,7 +41,7 @@ jobs:
         uses: shivammathur/setup-php@v2
 
       - name: Validate composer.json and composer.lock
-        run: composer validate --strict
+        run: composer validate
 
       - name: Cache Composer dependencies
         uses: actions/cache@v2
