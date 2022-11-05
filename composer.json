@@ -1,0 +1,22 @@
+{
+  "name": "onion/redis",
+  "authors": [
+    {
+      "name": "Dimitar Dimitrov",
+      "email": "daghostman.dd@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "onion/event-loop": "@dev",
+    "onion/interfaces": "@dev",
+    "onion/client": "@dev",
+    "onion/common": "@dev",
+    "onion/promise": "@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Onion\\Framework\\Redis\\": "src/"
+    }
+  }
+}
