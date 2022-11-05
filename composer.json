@@ -1,5 +1,6 @@
 {
   "name": "onion/redis",
+  "description": "Async redis client based on onion/event-loop",
   "authors": [
     {
       "name": "Dimitar Dimitrov",
