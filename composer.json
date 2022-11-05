@@ -21,6 +21,11 @@
       "Onion\\Framework\\Redis\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "@dev",
