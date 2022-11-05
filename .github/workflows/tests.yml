@@ -43,12 +43,5 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
       - name: Run test suite
         run: composer test
