@@ -43,5 +43,9 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
+      - name: Install dependencies
+        continue-on-error: ${{ matrix.php-versions != '8.1' }}
+        run: composer install --no-progress --no-interaction --ignore-platform-reqs
+
       - name: Run test suite
         run: composer test
