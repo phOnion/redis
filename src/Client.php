@@ -125,7 +125,7 @@ class Client
                 $redirect = substr($ex->getMessage(), 1, 3);
                 $deferred->resolve($this->cluster->send($redirect, ['ASKING'])
                     ->then(fn () => $this->cluster->send($redirect, $command)));
-            } else if (substr($ex->getMessage(), 1, 5) === 'MOVED') {
+            } elseif (substr($ex->getMessage(), 1, 5) === 'MOVED') {
                 [, $redirect] = explode(' ', substr($ex->getMessage(), 7), 2);
 
                 $deferred->resolve($this->cluster->send(str_replace(':', ' ', $redirect), $command));

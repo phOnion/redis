@@ -52,7 +52,7 @@ class Basic
     public function keys(
         string $pattern = '*'
     ): PromiseInterface {
-        return $this->client->raw('KEYS',  $pattern);
+        return $this->client->raw('KEYS', $pattern);
     }
 
     public function delete(string $key, string ...$keys): PromiseInterface

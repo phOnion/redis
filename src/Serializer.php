@@ -95,7 +95,9 @@ class Serializer
             $chunk = '';
             do {
                 $chunk = $client->receive();
-                if ($chunk === '.') break;
+                if ($chunk === '.') {
+                    break;
+                }
 
                 $arr[$counter] = $chunk;
             } while (true);
@@ -122,7 +124,7 @@ class Serializer
     {
         return match (strtoupper($number)) {
             'inf' => INF,
-            '-inf' => -INF,
+            '-inf' => - INF,
             default => (float) $number,
         };
     }

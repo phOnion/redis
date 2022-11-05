@@ -9,7 +9,6 @@ class Coordinates
     public function __construct(
         private readonly string | float $longitude,
         private readonly string | float $latitude,
-
     ) {
     }
 
