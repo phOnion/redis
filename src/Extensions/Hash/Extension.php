@@ -14,7 +14,7 @@ class Extension implements ExtensionInterface
         return 'hash';
     }
 
-    public function create(Client $client, array ...$arguments): Hash
+    public function create(Client $client, mixed ...$arguments): Hash
     {
         return new Hash($client, ...$arguments);
     }

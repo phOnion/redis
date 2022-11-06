@@ -18,7 +18,7 @@ class Extension implements ExtensionInterface
         return 'transaction';
     }
 
-    public function create(Client $client, array ...$arguments): object
+    public function create(Client $client, mixed ...$arguments): object
     {
         return $this->instance ??= new Transaction($client);
     }

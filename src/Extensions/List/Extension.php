@@ -14,7 +14,7 @@ class Extension implements ExtensionInterface
         return 'list';
     }
 
-    public function create(Client $client, array ...$arguments): ListModule
+    public function create(Client $client, mixed ...$arguments): ListModule
     {
         return new ListModule($client, ...$arguments);
     }

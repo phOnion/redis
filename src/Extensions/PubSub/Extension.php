@@ -16,7 +16,7 @@ class Extension implements ExtensionInterface
         return 'pubsub';
     }
 
-    public function create(Client $client, array ...$arguments): PubSub
+    public function create(Client $client, mixed ...$arguments): PubSub
     {
         return $this->instance ??= new PubSub($client);
     }

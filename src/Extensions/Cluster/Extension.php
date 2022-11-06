@@ -16,7 +16,7 @@ class Extension implements ExtensionInterface
         return 'cluster';
     }
 
-    public function create(Client $client, array ...$arguments): Cluster
+    public function create(Client $client, mixed ...$arguments): Cluster
     {
         return $this->instance ??= new Cluster($client);
     }

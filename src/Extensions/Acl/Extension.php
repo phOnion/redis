@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Onion\Framework\Redis\Extensions;
+namespace Onion\Framework\Redis\Extensions\Acl;
 
 use Onion\Framework\Redis\Client;
 use Onion\Framework\Redis\Extensions\Acl\Acl;
@@ -15,7 +15,7 @@ class Extension implements ExtensionInterface
         return 'acl';
     }
 
-    public function create(Client $client, array ...$arguments): Acl
+    public function create(Client $client, mixed ...$arguments): Acl
     {
         return new Acl($client);
     }

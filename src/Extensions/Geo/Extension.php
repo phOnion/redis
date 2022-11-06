@@ -14,7 +14,7 @@ class Extension implements ExtensionInterface
         return 'geo';
     }
 
-    public function create(Client $client, array ...$arguments): Geo
+    public function create(Client $client, mixed ...$arguments): Geo
     {
         return new Geo($client, ...$arguments);
     }

@@ -14,7 +14,7 @@ class Extension implements ExtensionInterface
         return 'set';
     }
 
-    public function create(Client $client, array ...$arguments): Set
+    public function create(Client $client, mixed ...$arguments): Set
     {
         return new Set($client, ...$arguments);
     }

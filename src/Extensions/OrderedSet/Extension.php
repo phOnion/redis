@@ -14,7 +14,7 @@ class Extension implements ExtensionInterface
         return 'orderedSet';
     }
 
-    public function create(Client $client, array ...$arguments): OrderedSet
+    public function create(Client $client, mixed ...$arguments): OrderedSet
     {
         return new OrderedSet($client, ...$arguments);
     }

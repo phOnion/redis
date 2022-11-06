@@ -14,7 +14,7 @@ class Extension implements ExtensionInterface
         return 'stream';
     }
 
-    public function create(Client $client, array ...$arguments): object
+    public function create(Client $client, mixed ...$arguments): object
     {
         return new Stream($client, ...$arguments);
     }

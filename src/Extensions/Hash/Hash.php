@@ -4,13 +4,12 @@ namespace Onion\Framework\Redis\Extensions\Hash;
 
 use ArrayAccess;
 use Countable;
+use InvalidArgumentException;
 use Onion\Framework\Redis\Client;
 use Onion\Framework\Promise\Interfaces\PromiseInterface;
 
 use function Onion\Framework\generator;
 use function Onion\Framework\Promise\await;
-
-use InvalidArgumentException;
 
 class Hash implements Countable, ArrayAccess
 {
