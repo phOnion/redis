@@ -24,8 +24,8 @@ class Serializer
             'float' => "\"{$value}\"",
             'double' => "\"{$value}\"",
             'null' => '',
-            'bool' => $value ? '1' : '0',
-            'boolean' => $value ? '1' : '0',
+            'bool' => $value ? 'true' : 'false',
+            'boolean' => $value ? 'true' : 'false',
             'int' => "{$value}",
             'integer' => "{$value}",
             default => '"' . addslashes(($this->serialize)($value)) . '"',
@@ -66,7 +66,14 @@ class Serializer
         if (is_string($result)) {
             $decoded = @($this->unserialize)($result);
 
-            return $decoded ?: $result;
+            $result = $decoded ?: match (true) {
+                ctype_digit($result) => (int) $result,
+                'true' === $result => true,
+                'false' === $result => false,
+                '' === $result => null,
+                $result === (string) (float) $result => (float) $result,
+                default => $result,
+            };
         }
 
         return $result;
@@ -124,7 +131,7 @@ class Serializer
     {
         return match (strtoupper($number)) {
             'inf' => INF,
-            '-inf' => - INF,
+            '-inf' => -INF,
             default => (float) $number,
         };
     }
