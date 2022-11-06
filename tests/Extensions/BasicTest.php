@@ -6,6 +6,7 @@ use Onion\Framework\Redis\Client;
 use Onion\Framework\Redis\Extensions\Basic\Basic;
 use Onion\Framework\Redis\Extensions\Basic\Extension;
 use Onion\Framework\Test\TestCase;
+use stdClass;
 
 class BasicTest extends TestCase
 {
@@ -22,12 +23,52 @@ class BasicTest extends TestCase
         $this->client->quit();
     }
 
+    public function readWriteDataProvider(): array
+    {
+        return [
+            ['name' => 'foo', 'value' => 'bar'],
+            ['name' => 'baz', 'value' => 123],
+            ['name' => 'test', 'value' => [true]],
+            ['name' => 'cls', 'value' => new stdClass()],
+            ['name' => 'variable', 'value' => ['f' => ['v' => ['o' => true]]]],
+        ];
+    }
 
-    public function testGet()
+    /**
+     * @dataProvider readWriteDataProvider
+     */
+    public function testBasicReadWrite(string $name, mixed $value): void
+    {
+        /** @var Basic $basic */
+        $basic = $this->client->basic();
+        $basic->set($name, $value)
+            ->then($this->assertTrue(...))
+            ->then(
+                fn () => $basic->get($name)->then(fn ($v) => $this->assertSame($value, $v))
+            );
+    }
+
+    public function getDataProvider(): array
+    {
+        return [
+            ['pattern' => '*', 'values' => [], 'expectation' => []],
+            ['pattern' => 'foo*', 'values' => ['foo' => true, 'bar' => true, 'foot' => false], 'expectation' => ['foo', 'foot']],
+            ['pattern' => 'foo', 'values' => [
+                'foo' => true,
+                'bar' => true,
+                'foot' => false,
+            ], 'expectation' => ['foo']],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testGet(string $pattern, array $values, array $expectation)
     {
         /** @var Basic $basic */
         $basic = $this->client->basic();
 
-        $basic->keys()->then($this->assertEmpty(...));
+        $basic->keys($pattern)->then(fn ($response) => $this->assertSame($expectation, $response));
     }
 }
