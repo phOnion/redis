@@ -17,12 +17,12 @@ class BasicTest extends TestCase
     public function setUp(): void
     {
         $this->client = new Client('tcp://127.0.0.1');
-        $this->client->auth('redis2');
         $this->client->register(new Extension());
     }
 
     public function tearDown(): void
     {
+        $this->client->basic()->flush();
         $this->client->quit();
     }
 
@@ -45,11 +45,9 @@ class BasicTest extends TestCase
     {
         /** @var Basic $basic */
         $basic = $this->client->basic();
-
-        $this->assertSame(
-            $value,
-            await($basic->set($name, $value)->then(fn () => $basic->get($name)))
-        );
+        $basic->set($name, $value)
+            ->then(fn () => $basic->get($name))
+            ->then(fn ($v) => $this->assertSame($value, $v));
     }
 
     public function getDataProvider(): array
