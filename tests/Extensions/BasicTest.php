@@ -8,6 +8,8 @@ use Onion\Framework\Redis\Extensions\Basic\Extension;
 use Onion\Framework\Test\TestCase;
 use stdClass;
 
+use function Onion\Framework\Promise\await;
+
 class BasicTest extends TestCase
 {
     private Client $client;
@@ -15,6 +17,7 @@ class BasicTest extends TestCase
     public function setUp(): void
     {
         $this->client = new Client('tcp://127.0.0.1');
+        $this->client->auth('redis2');
         $this->client->register(new Extension());
     }
 
@@ -29,8 +32,9 @@ class BasicTest extends TestCase
             ['name' => 'foo', 'value' => 'bar'],
             ['name' => 'baz', 'value' => 123],
             ['name' => 'test', 'value' => [true]],
-            ['name' => 'cls', 'value' => new stdClass()],
             ['name' => 'variable', 'value' => ['f' => ['v' => ['o' => true]]]],
+            ['name' => 'bool', 'value' => true],
+            ['name' => 'floaty', 'value' => 1.2345],
         ];
     }
 
@@ -41,11 +45,11 @@ class BasicTest extends TestCase
     {
         /** @var Basic $basic */
         $basic = $this->client->basic();
-        $basic->set($name, $value)
-            ->then($this->assertTrue(...))
-            ->then(
-                fn () => $basic->get($name)->then(fn ($v) => $this->assertSame($value, $v))
-            );
+
+        $this->assertSame(
+            $value,
+            await($basic->set($name, $value)->then(fn () => $basic->get($name)))
+        );
     }
 
     public function getDataProvider(): array
