@@ -11,7 +11,9 @@ class Utils
         $results = [];
         for ($i = 0; $i < count($values); $i++) {
             if (isset($values[$i + 1])) {
-                $results[$values[$i]] = is_array($values[$i + 1]) ? static::normalizeArray($values[$i + 1]) : $values[$i + 1];
+                $results[$values[$i]] =
+                    is_array($values[$i + 1]) ?
+                    static::normalizeArray($values[$i + 1]) : $values[$i + 1];
             } else {
                 $results[] = $values[$i];
             }
