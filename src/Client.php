@@ -130,10 +130,7 @@ class Client
 
                 $deferred->resolve($this->cluster->send(str_replace(':', ' ', $redirect), $command));
             } else {
-                $deferred->reject(new RuntimeException(
-                    "Error while executing '{$command}'",
-                    previous: $ex
-                ));
+                $deferred->reject(new RuntimeException("Error while executing '{$cmd}'", previous: $ex));
             }
         }
     }
